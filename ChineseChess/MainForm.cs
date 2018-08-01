@@ -34,11 +34,23 @@ namespace ChineseChess
         //右键菜单-新游戏
         private void NewGameToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            ResetPicture();
+
+            Clear(gameController.Reset);
+        }
+
+        private void NewGame960ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ResetPicture();
+            Clear(gameController.Reset960);
+        }
+
+        private void ResetPicture()
+        {
             //新游戏的初始化操作
             if (this.panelChessman.Controls.Count == 0)
             {
                 gameController = new GameController();
-
                 //如果没有生成过棋盘PictureBox，那么生成10 * 9个
                 for (int j = 0; j < RowSum; ++j)
                 {
@@ -79,9 +91,12 @@ namespace ChineseChess
                 //动态数组申请空间
                 lastStep = new int[6];
             }
-
+        }
+        private void Clear(Action reset)
+        {
             //重置游戏，重新摆放棋子
-            gameController.Reset();
+            reset();
+            //gameController.Reset();
             this.ResetAllChessman();
             //初始化闪动定时器
             DisableFlickerTimer();
@@ -89,7 +104,7 @@ namespace ChineseChess
             this.skipToolStripMenuItem.Enabled = true;
             this.undoToolStripMenuItem.Enabled = true;
             //初始化数据
-            SetLastStep(-1, -1, -1, -1, -1, -1);
+            SetLastStep(-1, -1, -1, -1, (Piece) (-1), (Piece) (-1));
         }
 
         //重置所有棋子
@@ -99,7 +114,7 @@ namespace ChineseChess
             foreach (Control control in this.panelChessman.Controls)
             {
                 PictureBox pictureBox = (PictureBox)control;
-                pictureBox.Image = chessmanImagePair[gameController.GetChessman(index / ColSum, index % ColSum)];
+                pictureBox.Image = chessmanImagePair[(int) gameController.GetChessman(index / ColSum, index % ColSum)];
                 index++;
             }
         }
@@ -115,7 +130,7 @@ namespace ChineseChess
             SetLastStep(lasti, lastj, i, j, gameController.GetChessman(lasti, lastj), gameController.GetChessman(i, j));
             gameController.SetChessman(lasti, lastj, i, j);
             PictureBox pictureBox = (PictureBox)this.panelChessman.Controls[i * ColSum + j];
-            pictureBox.Image = chessmanImagePair[gameController.GetChessman(i, j)];
+            pictureBox.Image = chessmanImagePair[(int) gameController.GetChessman(i, j)];
             PictureBox oldPictureBox = (PictureBox)this.panelChessman.Controls[lasti * ColSum + lastj];
             oldPictureBox.Image = chessmanImagePair[0];
             if (gameWillOver)
@@ -145,14 +160,14 @@ namespace ChineseChess
         }
 
         //记录上一步的信息
-        private void SetLastStep(int lasti, int lastj, int i, int j, int lastValue, int value)
+        private void SetLastStep(int lasti, int lastj, int i, int j, Piece lastValue, Piece value)
         {
             lastStep[0] = lasti;
             lastStep[1] = lastj;
             lastStep[2] = i;
             lastStep[3] = j;
-            lastStep[4] = lastValue;
-            lastStep[5] = value;
+            lastStep[4] = (int) lastValue;
+            lastStep[5] = (int) value;
         }
 
         //右键菜单-跳过回合
@@ -170,12 +185,12 @@ namespace ChineseChess
                 return;
             RemoveHelper();
             DisableFlickerTimer();
-            gameController.ResetChessman(lastStep[0], lastStep[1], lastStep[2], lastStep[3], lastStep[4], lastStep[5]);
+            gameController.ResetChessman(lastStep[0], lastStep[1], lastStep[2], lastStep[3], (Piece) lastStep[4], (Piece) lastStep[5]);
             PictureBox pictureBox = (PictureBox)this.panelChessman.Controls[lastStep[2] * ColSum + lastStep[3]];
             pictureBox.Image = chessmanImagePair[lastStep[5]];
             PictureBox oldPictureBox = (PictureBox)this.panelChessman.Controls[lastStep[0] * ColSum + lastStep[1]];
             oldPictureBox.Image = chessmanImagePair[lastStep[4]];
-            SetLastStep(-1, -1, -1, -1, -1, -1);
+            SetLastStep(-1, -1, -1, -1, (Piece) (-1), (Piece) (-1));
         }
 
         //右键菜单-退出

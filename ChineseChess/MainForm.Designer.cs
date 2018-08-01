@@ -38,6 +38,7 @@ namespace ChineseChess
             this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelChessman = new System.Windows.Forms.Panel();
+            this.NewGame960ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxChessPanel)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -46,7 +47,7 @@ namespace ChineseChess
             // 
             this.pictureBoxChessPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBoxChessPanel.BackgroundImage")));
             this.pictureBoxChessPanel.ContextMenuStrip = this.contextMenuStrip1;
-            this.pictureBoxChessPanel.Location = new System.Drawing.Point(1, -12);
+            this.pictureBoxChessPanel.Location = new System.Drawing.Point(1, -13);
             this.pictureBoxChessPanel.Name = "pictureBoxChessPanel";
             this.pictureBoxChessPanel.Size = new System.Drawing.Size(780, 885);
             this.pictureBoxChessPanel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -57,53 +58,61 @@ namespace ChineseChess
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newGameToolStripMenuItem,
+            this.NewGame960ToolStripMenuItem,
             this.skipToolStripMenuItem,
             this.undoToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(114, 92);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 136);
             // 
             // newGameToolStripMenuItem
             // 
             this.newGameToolStripMenuItem.Name = "newGameToolStripMenuItem";
-            this.newGameToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
+            this.newGameToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.newGameToolStripMenuItem.Text = "新游戏";
             this.newGameToolStripMenuItem.Click += new System.EventHandler(this.NewGameToolStripMenuItem_Click);
             // 
             // skipToolStripMenuItem
             // 
             this.skipToolStripMenuItem.Name = "skipToolStripMenuItem";
-            this.skipToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
+            this.skipToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.skipToolStripMenuItem.Text = "跳过";
             this.skipToolStripMenuItem.Click += new System.EventHandler(this.SkipToolStripMenuItem_Click);
             // 
             // undoToolStripMenuItem
             // 
             this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
-            this.undoToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
+            this.undoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.undoToolStripMenuItem.Text = "悔棋";
             this.undoToolStripMenuItem.Click += new System.EventHandler(this.UndoToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exitToolStripMenuItem.Text = "退出";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
             // panelChessman
             // 
             this.panelChessman.BackColor = System.Drawing.Color.Transparent;
-            this.panelChessman.Location = new System.Drawing.Point(21, 21);
+            this.panelChessman.Location = new System.Drawing.Point(21, 23);
             this.panelChessman.Name = "panelChessman";
-            this.panelChessman.Size = new System.Drawing.Size(800, 870);
+            this.panelChessman.Size = new System.Drawing.Size(800, 943);
             this.panelChessman.TabIndex = 1;
+            // 
+            // NewGame960ToolStripMenuItem
+            // 
+            this.NewGame960ToolStripMenuItem.Name = "NewGame960ToolStripMenuItem";
+            this.NewGame960ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.NewGame960ToolStripMenuItem.Text = "960";
+            this.NewGame960ToolStripMenuItem.Click += new System.EventHandler(this.NewGame960ToolStripMenuItem_Click);
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(779, 866);
+            this.ClientSize = new System.Drawing.Size(779, 938);
             this.Controls.Add(this.panelChessman);
             this.Controls.Add(this.pictureBoxChessPanel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -127,6 +136,7 @@ namespace ChineseChess
         private System.Windows.Forms.ToolStripMenuItem undoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.Panel panelChessman;
+        private System.Windows.Forms.ToolStripMenuItem NewGame960ToolStripMenuItem;
     }
 }
 
