@@ -6,15 +6,58 @@ using System.Threading.Tasks;
 
 namespace ChineseChess
 {
-    class GameController
+    public class GameController
     {
-        private const int RowSum = 10;  //行总数
-        private const int ColSum = 9;   //列总数
+        public const int RowSum = 10;  //行总数
+        public const int ColSum = 9;   //列总数
         private Piece[][] chessMan;   //代表着全场象棋的数组
         private bool[][] avalChess; //选择棋子时的可选表
         private int[][] moveHelper; //移动棋子时的提示表
         private bool whosTurn;
         private const int minX = 0, minY = 0, maxX = 8, maxY = 9;
+
+        private readonly List<Tuple<int, int, Piece>> traditionalSetup = new List<Tuple<int, int, Piece>>()
+        {
+            new Tuple<int, int, Piece>(0, 0, Piece.RedRook),
+            new Tuple<int, int, Piece>(0, 0, Piece.RedRook),
+            new Tuple<int, int, Piece>(0, 1, Piece.RedKnight),
+            new Tuple<int, int, Piece>(0, 2, Piece.RedElephant),
+            new Tuple<int, int, Piece>(0, 3, Piece.RedGuard),
+            new Tuple<int, int, Piece>(0, 4, Piece.RedKing),
+            new Tuple<int, int, Piece>(0, 5, Piece.RedGuard),
+            new Tuple<int, int, Piece>(0, 6, Piece.RedElephant),
+            new Tuple<int, int, Piece>(0, 7, Piece.RedKnight),
+            new Tuple<int, int, Piece>(0, 8, Piece.RedRook),
+
+            new Tuple<int, int, Piece>(2, 1, Piece.RedCannon),
+            new Tuple<int, int, Piece>(2, 7, Piece.RedCannon),
+
+            new Tuple<int, int, Piece>(3, 0, Piece.RedPawn),
+            new Tuple<int, int, Piece>(3, 2, Piece.RedPawn),
+            new Tuple<int, int, Piece>(3, 4, Piece.RedPawn),
+            new Tuple<int, int, Piece>(3, 6, Piece.RedPawn),
+            new Tuple<int, int, Piece>(3, 8, Piece.RedPawn),
+
+
+            new Tuple<int, int, Piece>(9, 0, Piece.BlackRook),
+            new Tuple<int, int, Piece>(9, 1, Piece.BlackKnight),
+            new Tuple<int, int, Piece>(9, 2, Piece.BlackElephant),
+            new Tuple<int, int, Piece>(9, 3, Piece.BlackGuard),
+            new Tuple<int, int, Piece>(9, 4, Piece.BlackKing),
+            new Tuple<int, int, Piece>(9, 5, Piece.BlackGuard),
+            new Tuple<int, int, Piece>(9, 6, Piece.BlackElephant),
+            new Tuple<int, int, Piece>(9, 7, Piece.BlackKnight),
+            new Tuple<int, int, Piece>(9, 8, Piece.BlackRook),
+
+            new Tuple<int, int, Piece>(7, 1, Piece.BlackCannon),
+            new Tuple<int, int, Piece>(7, 7, Piece.BlackCannon),
+
+            new Tuple<int, int, Piece>(6, 0, Piece.BlackPawn),
+            new Tuple<int, int, Piece>(6, 2, Piece.BlackPawn),
+            new Tuple<int, int, Piece>(6, 4, Piece.BlackPawn),
+            new Tuple<int, int, Piece>(6, 6, Piece.BlackPawn),
+            new Tuple<int, int, Piece>(6, 8, Piece.BlackPawn)
+        };
 
         public GameController()
         {
@@ -41,41 +84,10 @@ namespace ChineseChess
                 }
             }
 
-            // setup red
-            chessMan[0][0] = Piece.RedRook;
-            chessMan[0][1] = Piece.RedKnight;
-            chessMan[0][2] = Piece.RedElephant;
-            chessMan[0][3] = Piece.RedGuard;
-            chessMan[0][4] = Piece.RedKing;
-            chessMan[0][5] = Piece.RedGuard;
-            chessMan[0][6] = Piece.RedElephant;
-            chessMan[0][7] = Piece.RedKnight;
-            chessMan[0][8] = Piece.RedRook;
-            chessMan[2][2] = Piece.RedCannon;
-            chessMan[2][6] = Piece.RedCannon;
-            chessMan[3][0] = Piece.RedPawn;
-            chessMan[3][2] = Piece.RedPawn;
-            chessMan[3][4] = Piece.RedPawn;
-            chessMan[3][6] = Piece.RedPawn;
-            chessMan[3][8] = Piece.RedPawn;
-
-            // setup black
-            chessMan[9][0] = Piece.BlackRook;
-            chessMan[9][1] = Piece.BlackKnight;
-            chessMan[9][2] = Piece.BlackElephant;
-            chessMan[9][3] = Piece.BlackGuard;
-            chessMan[9][4] = Piece.BlackKing;
-            chessMan[9][5] = Piece.BlackGuard;
-            chessMan[9][6] = Piece.BlackElephant;
-            chessMan[9][7] = Piece.BlackKnight;
-            chessMan[9][8] = Piece.BlackRook;
-            chessMan[7][2] = Piece.BlackCannon;
-            chessMan[7][6] = Piece.BlackCannon;
-            chessMan[6][0] = Piece.BlackPawn;
-            chessMan[6][2] = Piece.BlackPawn;
-            chessMan[6][4] = Piece.BlackPawn;
-            chessMan[6][6] = Piece.BlackPawn;
-            chessMan[6][8] = Piece.BlackPawn;
+            foreach (var t in traditionalSetup)
+            {
+                chessMan[t.Item1][t.Item2] = t.Item3;
+            }
 
             //初始化先手和可选棋表
             whosTurn = true;
@@ -85,6 +97,21 @@ namespace ChineseChess
         // like chess960 but chinese chess
         public void Reset960()
         {
+            bool isUnique()
+            {
+                bool isUniqueSetup = false;
+                foreach (var t in traditionalSetup)
+                {
+                    if (chessMan[t.Item1][t.Item2] != t.Item3)
+                    {
+                        isUniqueSetup = true;
+                        break;
+                    }
+                }
+
+                return isUniqueSetup;
+            }
+
             Random r = new Random();
 
             //初始化棋盘
@@ -96,53 +123,61 @@ namespace ChineseChess
                 }
             }
 
-            // pool
-            var list = new List<Piece>()
+            do
             {
-                Piece.RedRook, Piece.RedRook,
-                Piece.RedElephant, Piece.RedElephant,
-                Piece.RedKnight, Piece.RedKnight,
-                Piece.RedCannon, Piece.RedCannon
-            };
-            var redPool = new Stack<Piece>(list.OrderBy<Piece, int>(p => r.Next()));
+                // pool
+                var list = new List<Piece>()
+                {
+                    Piece.RedRook,
+                    Piece.RedRook,
+                    Piece.RedElephant,
+                    Piece.RedElephant,
+                    Piece.RedKnight,
+                    Piece.RedKnight,
+                    Piece.RedCannon,
+                    Piece.RedCannon
+                };
+                var redPool = new Stack<Piece>(list.OrderBy<Piece, int>(p => r.Next()));
 
-            // setup red
-            
-            chessMan[0][0] = redPool.Pop();
-            chessMan[0][1] = redPool.Pop();
-            chessMan[0][2] = redPool.Pop();
-            chessMan[0][6] = redPool.Pop();
-            chessMan[0][7] = redPool.Pop();
-            chessMan[0][8] = redPool.Pop();
-            chessMan[2][2] = redPool.Pop();
-            chessMan[2][6] = redPool.Pop();
-            chessMan[3][0] = Piece.RedPawn;
-            chessMan[3][2] = Piece.RedPawn;
-            chessMan[3][4] = Piece.RedPawn;
-            chessMan[3][6] = Piece.RedPawn;
-            chessMan[3][8] = Piece.RedPawn;
-            chessMan[0][3] = Piece.RedGuard;
-            chessMan[0][4] = Piece.RedKing;
-            chessMan[0][5] = Piece.RedGuard;
+                // setup red
 
-            // setup black
-            
-            chessMan[9][0] = chessMan[0][0].Invert();
-            chessMan[9][1] = chessMan[0][1].Invert();
-            chessMan[9][2] = chessMan[0][2].Invert();
-            chessMan[9][6] = chessMan[0][6].Invert();
-            chessMan[9][7] = chessMan[0][7].Invert();
-            chessMan[9][8] = chessMan[0][8].Invert();
-            chessMan[7][2] = chessMan[2][2].Invert();
-            chessMan[7][6] = chessMan[2][6].Invert();
-            chessMan[6][0] = chessMan[3][0].Invert();
-            chessMan[6][2] = chessMan[3][2].Invert();
-            chessMan[6][4] = chessMan[3][4].Invert();
-            chessMan[6][6] = chessMan[3][6].Invert();
-            chessMan[6][8] = chessMan[3][8].Invert();
-            chessMan[9][3] = chessMan[0][3].Invert();
-            chessMan[9][4] = chessMan[0][4].Invert();
-            chessMan[9][5] = chessMan[0][5].Invert();
+                chessMan[0][0] = redPool.Pop();
+                chessMan[0][1] = redPool.Pop();
+                chessMan[0][2] = redPool.Pop();
+                chessMan[0][6] = redPool.Pop();
+                chessMan[0][7] = redPool.Pop();
+                chessMan[0][8] = redPool.Pop();
+                chessMan[2][1] = redPool.Pop();
+                chessMan[2][7] = redPool.Pop();
+                chessMan[3][0] = Piece.RedPawn;
+                chessMan[3][2] = Piece.RedPawn;
+                chessMan[3][4] = Piece.RedPawn;
+                chessMan[3][6] = Piece.RedPawn;
+                chessMan[3][8] = Piece.RedPawn;
+                chessMan[0][3] = Piece.RedGuard;
+                chessMan[0][4] = Piece.RedKing;
+                chessMan[0][5] = Piece.RedGuard;
+
+                // setup black
+
+                chessMan[9][0] = chessMan[0][0].Invert();
+                chessMan[9][1] = chessMan[0][1].Invert();
+                chessMan[9][2] = chessMan[0][2].Invert();
+                chessMan[9][6] = chessMan[0][6].Invert();
+                chessMan[9][7] = chessMan[0][7].Invert();
+                chessMan[9][8] = chessMan[0][8].Invert();
+                chessMan[7][1] = chessMan[2][1].Invert();
+                chessMan[7][7] = chessMan[2][7].Invert();
+                chessMan[6][0] = chessMan[3][0].Invert();
+                chessMan[6][2] = chessMan[3][2].Invert();
+                chessMan[6][4] = chessMan[3][4].Invert();
+                chessMan[6][6] = chessMan[3][6].Invert();
+                chessMan[6][8] = chessMan[3][8].Invert();
+                chessMan[9][3] = chessMan[0][3].Invert();
+                chessMan[9][4] = chessMan[0][4].Invert();
+                chessMan[9][5] = chessMan[0][5].Invert();
+            } while (!isUnique()); // ensure dont end up traditional
+
 
             //初始化先手和可选棋表
             whosTurn = true;
@@ -168,6 +203,8 @@ namespace ChineseChess
         }
 
         //设置可移动状态，己方棋子及自身=3，可选敌方棋子=1，可选空位=2，不可选棋子0
+        //own piece = 3, can capture = 1, can move = 2
+        //3 沒用, -1 不能動
         public void SetMoveHelper(int i, int j)
         {
             for(int a = 0; a < RowSum; ++a)

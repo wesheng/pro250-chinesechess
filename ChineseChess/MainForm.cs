@@ -15,8 +15,8 @@ namespace ChineseChess
     {
         private GameController gameController;
         private Dictionary<int, Image> chessmanImagePair;   //储存int-Image的对应
-        private const int RowSum = 10;  //行总数
-        private const int ColSum = 9;   //列总数
+        public int RowSum => GameController.RowSum;  //行总数
+        public int ColSum => GameController.ColSum;   //列总数
         private int[] lastStep; //记录上一步的动作，用于撤销操作
         private PictureBox currentChosenPictureBox = null;  //当前选中的棋子
         private Image currentChosenImage = null;    //当前选中的棋子的图像，用于闪动效果的实现
@@ -123,9 +123,7 @@ namespace ChineseChess
         private bool ResetAChessman(int lasti, int lastj, int i, int j)
         {
             //游戏是否即将结束
-            bool gameWillOver = false;
-            if (true == gameController.CanMove(lasti, lastj, i, j) && true == gameController.IsGameOver(i, j))
-                gameWillOver = true;
+            bool gameWillOver = gameController.CanMove(lasti, lastj, i, j) && gameController.IsGameOver(i, j);
             //移动
             SetLastStep(lasti, lastj, i, j, gameController.GetChessman(lasti, lastj), gameController.GetChessman(i, j));
             gameController.SetChessman(lasti, lastj, i, j);
@@ -141,7 +139,7 @@ namespace ChineseChess
                 this.skipToolStripMenuItem.Enabled = false;
                 this.undoToolStripMenuItem.Enabled = false;
                 this.Cursor = Cursors.Default;
-                MessageBox.Show("游戏结束！" + (winner == false ? "红" : "黑") + "方胜利");
+                MessageBox.Show("Winner: " + (!winner ? "Red" : "Black"));
             }
             return true;
         }

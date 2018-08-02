@@ -1,4 +1,9 @@
+fork from https://github.com/triumphalLiu/ChineseChess
+
+
+
 ## 中国象棋
+
 ### 概述
 编程语言：C#  
 IDE : Visual Studio 2017  
